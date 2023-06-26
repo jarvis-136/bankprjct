@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">Coin Bank</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
+        </li>
+
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Branches
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="https://en.wikipedia.org/wiki/Thiruvananthapuram" target="_blank">Thiruvananthapuram</a></li>
+            <li><a class="dropdown-item" href="https://en.wikipedia.org/wiki/Palakkad" target="_blank">Palakkad</a></li>
+            <li><a class="dropdown-item" href="https://en.wikipedia.org/wiki/Ernakulam" target="_blank">Ernakulam</a></li>
+            <li><a class="dropdown-item" href="https://en.wikipedia.org/wiki/Thrissur" target="_blank">Thrissur</a></li>
+            <li><a class="dropdown-item" href="https://en.wikipedia.org/wiki/Kozhikode" target="_blank">Kozhikode</a></li>
+          </ul>
+        </li>
+          {% if user.is_authenticated %}
+            <li><a href="{% url 'bankapp:ulogout' %}">Logout</a></li>
+        {% else %}
+
+            <li class="nav-item">
+                <a class="nav-link active" href="{% url 'bankapp:register' %}">Register</a>
+            </li>
+          <li><a href="{% url 'bankapp:ulogin' %}" class="btn btn-outline-success">Login</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+{% endblock %}
+{% block content %}
+
+  <h1>Login</h1>
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+    <form method="post" action="{% url 'bankapp:mpage' %}">
+        {% csrf_token %}
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+        <input type="submit" value="Login" class="btn btn-outline-primary">
+        <a class="btn btn-outline-success" href="{% url 'bankapp:register' %}">Register</a>
+    </form>
+
+{% endblock %}

@@ -1,0 +1,249 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">Coin Bank</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
+        </li>
+
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Branches
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="https://en.wikipedia.org/wiki/Thiruvananthapuram" target="_blank">Thiruvananthapuram</a></li>
+            <li><a class="dropdown-item" href="https://en.wikipedia.org/wiki/Palakkad" target="_blank">Palakkad</a></li>
+            <li><a class="dropdown-item" href="https://en.wikipedia.org/wiki/Ernakulam" target="_blank">Ernakulam</a></li>
+            <li><a class="dropdown-item" href="https://en.wikipedia.org/wiki/Thrissur" target="_blank">Thrissur</a></li>
+            <li><a class="dropdown-item" href="https://en.wikipedia.org/wiki/Kozhikode" target="_blank">Kozhikode</a></li>
+          </ul>
+        </li>
+          {% if user.is_authenticated %}
+            <li><a href="{% url 'bankapp:ulogout' %}">Logout</a></li>
+        {% else %}
+
+<!--            <li class="nav-item">-->
+<!--                <a class="nav-link active" href="{% url 'bankapp:register' %}">Register</a>-->
+<!--            </li>-->
+<!--          <li><a href="{% url 'bankapp:ulogin' %}" class="btn btn-outline-success">Login</a></li>-->
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+{% endblock %}
+{% block content %}
+
+                  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <script>
+                        $(document).ready(function() {
+                            // Define the district and branch options
+                            var options = {
+                                "Thiruvananthapuram": ["Neyyattinkara", "Nedumangadu", "Kattakada"],
+                                "Ernakulam": ["Aluva", "Edapally", "Kakkanad"],
+                                "Thrissur": ["Irinjalakuda", "Guruvayur", "Chalakudy"],
+                                "Palakkad": ["Cherplassery", "Mannarkad", "Ottappalam"],
+                                "Kozhikode": ["Kozhikode City", "Koyilandy", "Vadakara"]
+                                // Add more districts and branches as needed
+                            };
+
+                            // Populate the district dropdown
+                            var districtDropdown = $("#districtDropdown");
+                            for (var district in options) {
+                                districtDropdown.append("<option value='" + district + "'>" + district + "</option>");
+                            }
+
+                            // Update the branch dropdown based on the selected district
+                            districtDropdown.on("change", function() {
+                                var selectedDistrict = $(this).val();
+                                var branchDropdown = $("#branchDropdown");
+                                var branches = options[selectedDistrict];
+
+                                branchDropdown.empty(); // Clear existing options
+
+                                if (branches) {
+                                    for (var i = 0; i < branches.length; i++) {
+                                        branchDropdown.append("<option value='" + branches[i] + "'>" + branches[i] + "</option>");
+                                    }
+                                }
+                            });
+                        });
+                    </script>
+
+<section class="vh-100 gradient-custom">
+  <div class="container py-5 h-100">
+    <div class="row justify-content-center align-items-center h-100">
+      <div class="col-12 col-lg-9 col-xl-7">
+        <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
+          <div class="card-body p-4 p-md-5">
+            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Registration Form</h3>
+            <form action="{% url 'bankapp:form' %}" method="post">
+              {% csrf_token %}
+
+              <div class="row">
+                <div class="col-md-6 mb-4">
+
+                  <div class="form-outline">
+                    <input type="text" id="firstName" class="form-control form-control-lg" name="firstname" required/>
+                    <label class="form-label" for="firstName">First Name</label>
+                  </div>
+
+                </div>
+                <div class="col-md-6 mb-4">
+
+                  <div class="form-outline">
+                    <input type="text" id="lastName" class="form-control form-control-lg" name="lastname" required/>
+                    <label class="form-label" for="lastName">Last Name</label>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-4 d-flex align-items-center">
+
+                  <div class="form-outline datepicker w-100">
+                    <input type="date" class="form-control form-control-lg" id="dob" name="dob" required/>
+                    <label for="dob" class="form-label">DOB</label>
+                  </div>
+
+                </div>
+<!--                <div class="col-md-6 mb-4">-->
+
+<!--                  <h6 class="mb-2 pb-1">Gender: </h6>-->
+
+<!--                  <div class="form-check form-check-inline">-->
+<!--                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="femaleGender"-->
+<!--                      value="option1" checked />-->
+<!--                    <label class="form-check-label" for="femaleGender">Female</label>-->
+<!--                  </div>-->
+
+<!--                  <div class="form-check form-check-inline">-->
+<!--                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="maleGender"-->
+<!--                      value="option2" />-->
+<!--                    <label class="form-check-label" for="maleGender">Male</label>-->
+<!--                  </div>-->
+
+<!--                  <div class="form-check form-check-inline">-->
+<!--                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="otherGender"-->
+<!--                      value="option3" />-->
+<!--                    <label class="form-check-label" for="otherGender">Other</label>-->
+<!--                  </div>-->
+
+<!--                </div>-->
+                <div class="col-md-6 mb-4">
+
+                  <div class="form-outline">
+                    <input type="number" id="age" class="form-control form-control-lg"  name="age" required/>
+                    <label class="form-label" for="age">Age</label>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-4 pb-2">
+
+                  <div class="form-outline">
+                    <input type="text" id="gender" class="form-control form-control-lg" name="gender" required/>
+                    <label class="form-label" for="gender">Gender</label>
+                  </div>
+
+                </div>
+                <div class="col-md-6 mb-4 pb-2">
+
+                  <div class="form-outline">
+                    <input type="tel" id="phone" class="form-control form-control-lg" name="phone"required/>
+                    <label class="form-label" for="phone">Phone Number</label>
+                  </div>
+
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-4 pb-2">
+
+                  <div class="form-outline">
+                    <input type="email" id="Email" class="form-control form-control-lg" name="emailid" required/>
+                    <label class="form-label" for="Email">Mail Address</label>
+                  </div>
+
+                </div>
+                <div class="col-md-6 mb-4 pb-2">
+
+                  <div class="form-outline">
+                    <input type="text" id="address" class="form-control form-control-lg" name="address" required/>
+                    <label class="form-label" for="address">Address</label>
+                  </div>
+
+                </div>
+              </div>
+
+
+              <div class="row">
+                <div class="col-12">
+
+                  <select class="select form-control-lg" id="districtDropdown" name="district">
+                    <!-- District options will be populated dynamically -->
+                  </select>
+                  <label class="form-label select-label" for="districtDropdown">District</label>
+
+                  <select class="select form-control-lg" id="branchDropdown" name="branch">
+                    <!-- Branch options will be populated based on the selected district -->
+                  </select>
+                  <label class="form-label select-label" for="branchDropdown">Branch</label>
+
+                </div>
+              </div>
+
+
+
+              <div class="row" >
+                  <div class="col-12 pt-5">
+
+                  <select class="select form-control-lg" name="accounttype">
+                    <option value="1">Savings Account</option>
+                    <option value="2">Current Account</option>
+                  </select>
+                  <label class="form-label select-label">Account Type</label>
+
+                </div>
+              </div>
+
+              <label class="pt-5" style="font-size:22px;" >Materials Provide</label>
+                <div>
+                  <input type="checkbox" id="checkbox-1" name="materials" value="Debit Card" />
+                  <label for="checkbox-1" style="font-size:20px;margin-right: 20px;">Debit Card</label>
+
+                  <input type="checkbox" id="checkbox-2" name="materials" value="Credit Card" />
+                  <label for="checkbox-2" style="font-size:20px;margin-right: 20px;">Credit Card</label>
+
+                  <input type="checkbox" id="checkbox-3" name="materials" value="Cheque Book" />
+                  <label for="checkbox-3" style="font-size:20px;">Cheque Book</label>
+                </div>
+
+              <div class="mt-4 pt-2">
+                <input class="btn btn-primary btn-lg" type="submit" value="Submit" />
+                <a class="btn btn-outline-danger" href="{% url 'bankapp:ulogout' %}">Logout</a>
+              </div>
+
+            </form>
+            {% if message %}
+              <div class="message">{{ message|safe }}</div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% endblock %}
